@@ -1,0 +1,18 @@
+html, .x-fullscreen{
+	background-color:#fff;
+}
+
+.painting {
+	background-repeat:no-repeat;
+	background-size:contain;
+	background-position:50% 0;
+}
+
+.textInfo{
+	top: 20px;
+}
+
+.bridge{background-image:url('http://src.sencha.io/http://www.fidestin.com/images/bridge.jpg')}
+.church{background-image:url('http://src.sencha.io/http://www.fidestin.com/images/church.jpg')}
+.halp{background-image:url('http://src.sencha.io/http://www.fidestin.com/images/halp.jpg')}
+
