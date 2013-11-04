@@ -27,17 +27,17 @@ function launchDirectionsWindow(){
   var dest=Ext.getCmp('mapcard').supplierLocation;
   var destX=dest[Object.keys(dest)[0]].toFixed(3);
   var destY=dest[Object.keys(dest)[1]].toFixed(3);
-  
-  //var destX=53.563;
- // var destY=-9.023;
   var directionsUrl='https://maps.google.com/maps?saddr='+userX+','+userY + '&daddr='+destX+','+destY;
   
   
   console.log('In MapChildbrowser :' + directionsUrl);
-  childBrowser=ChildBrowser.install();
-  //childBrowser.onLocationChange=FBCheckURL;
-  //childBrowser.onClose=FBWindowClose;
-  childBrowser.showWebPage(directionsUrl,{showLocationBar:false});
+  
+  
+  //Cordova 3.0 Plugin
+  var ref=window.open(directionsUrl,'_blank','location=yes');
+  ref.addEventListener('loadstart',function(event){alert('start' + event.url);});
+  ref.addEventListener('loadstop',function(event){alert('stop' + event.url);});
+  
   
  }
  catch(b){
