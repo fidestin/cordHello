@@ -36,7 +36,7 @@ function launchDirectionsWindow(){
   //Cordova 3.0 Plugin
   var ref=window.open(directionsUrl,'_blank','location=yes');
   ref.addEventListener('loadstart',function(event){alert('start' + event.url);});
-  ref.addEventListener('loadstop',function(event){alert('stop' + event.url);});
+  ref.addEventListener('loadstop',function(event){Aalert('stop' + event.url);});
   
   
  }
@@ -89,7 +89,7 @@ ToolbarDemo.views.Mapcard = Ext.extend(Ext.Panel, {
              scope:this,
                                             handler:function(){
                                             someobject=this;
-                                            console.log('dInside the handler: ' + this.supplierLocation);
+                                            console.log('dInside the handler: supplier location is :  ' + this.supplierLocation);
                                             launchDirectionsWindow();
                                             }
                   });

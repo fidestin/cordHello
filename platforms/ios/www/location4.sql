@@ -65,7 +65,7 @@ INSERT INTO "location" VALUES(3042,'159','Alchemy Club & Venue','225',53.345794,
 Temple Bar','+353 1 612 9390','Alchemy is Dublin’s hottest new club and venue. It is centrally located in the heart of the city’s entertainment quarter on Fleet Street. 
 
 The decor is stylish and chic and there is lots','http://www.visitdublin.com/nearby/nDetails.aspx?id=225&mid=159','','alchemy100.jpg','','');
-INSERT INTO "location" VALUES(3043,'199','Cellar Bar','225',53.338495,-6.252948,'The Merrion Hotel,
+INSERT INTO "location" VALUES(3043,'199','Cellar Bar Galway','225',53.27124,-9.0568,'The Merrion Hotel,
 Upper Merrion Street,','+353 1 603 0600','Set in the original 18th century wine vaults under the Georgian townhouses which form the main house of the Merrion Hotel.','http://www.visitdublin.com/nearby/nDetails.aspx?id=225&mid=199','','cellar bar sm.jpg','','');
 INSERT INTO "location" VALUES(3044,'303','Davy Byrnes','225',53.34189,-6.25942,'21 Duke Street,','+353 1 677 5217','''Davy Byrnes Dublin''s most famous pub certaily in a literary sense, with its Joycean Associations, always charcterful, classy and fashionable. It''s the original Dublin Gastropub and it''s ove','http://www.visitdublin.com/nearby/nDetails.aspx?id=225&mid=303','','DavyByrnes06ty.jpg','','');
 INSERT INTO "location" VALUES(3045,'366','Duffy''s Bar & Lounge','225',53.451005,-6.151121,'Main Street,

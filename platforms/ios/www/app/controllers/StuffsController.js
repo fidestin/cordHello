@@ -4,7 +4,10 @@
 
 var markerPositions=[];			//Use this array to hold the markers for the map...
 var markers=[];
-
+var userLocation;
+var userMarker;
+var userLocationX;
+var userLocationY;
 
 
 //Iterate thru the markers collection and set their map property to NULL
@@ -292,7 +295,7 @@ Ext.regController('StuffsController', {
 				}
 			}
 			
-			//Create array of markers from arroy of positions
+			//Create array of markers from array of positions
 			for (var n=0;n<markerPositions.length;n++){
 				var marker= new google.maps.Marker({
 					position:markerPositions[n],
@@ -303,6 +306,35 @@ Ext.regController('StuffsController', {
 				markers.push(marker);
 			}
 		
+    
+    
+                  var onGeoSuccess=function(position){
+                    console.log('Latitude' + position.coords.latitude + '**' + 'Longitude' + position.coords.longitude);
+                  userLocationX =position.coords.latitude;
+                  userLocationY =position.coords.longitude;
+                  console.log('userLocationX' + userLocationX);
+                  userLocation=new google.maps.LatLng(userLocationX,userLocationY);
+                  console.log('stuffscontroller.js-> onGeoSuccess -> The user now location is ' + userLocation);
+                  
+                  userMarker=new google.maps.Marker({
+                                                    position: userLocation,
+                                                    map:mimap,
+                                                    title:'Meee'
+                                                    
+                                                    });
+
+                  }
+                  
+                  var onGeoError=function(error){
+                   console.log('An error has occurred');
+                  
+                  }
+    
+      //add userLocation
+      navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
+                  
+                  
+      
 			var supplier2=options.suppData.data;		//another way of getting the supplier
 			var supplierLocation=new google.maps.LatLng(supplier2.latX,supplier2.latY);
 			
@@ -312,7 +344,7 @@ Ext.regController('StuffsController', {
 				google.maps.event.trigger(mimap,"resize");	//ensures it displays correctly after pan
 			});
 			
-			console.log('Opening map -> setActiveItem');
+			console.log('Openg map -> setActiveItem');
     		ToolbarDemo.views.stuffView.setActiveItem(ToolbarDemo.views.mapView,'flip');
 			
 			google.maps.event.trigger(mimap,"resize");		//ensures it displays correctly on opening	
