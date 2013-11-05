@@ -8,7 +8,26 @@ var userLocation;
 var userMarker;
 var userLocationX;
 var userLocationY;
+var bounds;
 
+
+function addInfoWindow(marker,message){
+ try{
+ console.log('clicked...');
+ var info=message;
+ 
+ var infoWindow=new google.maps.InfoWindow({
+                                           content:message
+ });
+ 
+ google.maps.event.addListener(marker,'click',function(){
+                               infoWindow.open(map,marker);
+                               });
+ }
+ catch(b){
+  console.log('Error in addInfoWindow');
+ }
+}
 
 //Iterate thru the markers collection and set their map property to NULL
 function ClearMap(){
@@ -17,6 +36,7 @@ function ClearMap(){
 			markers[i].setMap(null);
 		}
 		markers.length=0;
+    //Also remove userLocation
 	}
 }
 
@@ -266,6 +286,7 @@ Ext.regController('StuffsController', {
 			//Set the Close button
 			
 			
+                  try{
 			
 			mimap=Ext.getCmp('map1').items.items[0].map;	//grab the map object...
 			
@@ -285,6 +306,9 @@ Ext.regController('StuffsController', {
 			markers.length=0;				//init the marker array
 			markerPositions.length=0;		//ensure the position array is empty to begin with..
 			
+      bounds=new google.maps.LatLngBounds();
+      
+      
 			//Create an array of positions //TODO should match the openMapList
 			for (var i=0;i<suppliers.length;i++){
 				if (options.action=="openMap"){
@@ -304,6 +328,8 @@ Ext.regController('StuffsController', {
 				
 				//Add this marker to collection
 				markers.push(marker);
+        //Extend bounds
+       bounds.extend(markerPositions[n]);
 			}
 		
     
@@ -319,9 +345,16 @@ Ext.regController('StuffsController', {
                   userMarker=new google.maps.Marker({
                                                     position: userLocation,
                                                     map:mimap,
-                                                    title:'Meee'
+                                                    title:'You!'
                                                     
                                                     });
+                  //add click event for userLocation MARKER
+                  addInfoWindow(userMarker,'You!');
+                  
+                  bounds.extend(userLocation);  //for userLocation POSITION
+                  console.log('Try and set the bounds here...');
+                  mimap.fitBounds(bounds);
+
 
                   }
                   
@@ -348,20 +381,27 @@ Ext.regController('StuffsController', {
     		ToolbarDemo.views.stuffView.setActiveItem(ToolbarDemo.views.mapView,'flip');
 			
 			google.maps.event.trigger(mimap,"resize");		//ensures it displays correctly on opening	
-			mimap.setCenter(supplierLocation);
+			//mimap.setCenter(supplierLocation);
+      //mimap.fitBounds(bounds);
+      //mimap.setCenter(bounds.getCenter());         //take the marker bounds into account
 			
 			//get the toolbar component - Allows us update the ToolBar easily...
 			var tb=Ext.getCmp('mapcard');
 			tb.supplierLocation=supplierLocation;
 			google.maps.event.addListener(mimap, 'zoom_changed', function(){
-					console.log('Zoome ended');
+					console.log('mimap Zoom ended');
 				//	tb.dockedItems.items[0].setTitle('Loading...');
 			});
 			google.maps.event.addListener(mimap, 'idle', function(){
-					console.log('All quiet now');
+					console.log('All idle now');
 				//	tb.dockedItems.items[0].setTitle('Loaded!');
 			});
-			
+     			
+                  }
+                  catch(b){
+                   console.log('Error in stuffsController.js-> ' + b);
+                  
+                  }
 			//Just go and open the marker straight away...when map is displayed...
 			//supplierInfowindow.open(mimap,supplierMarker);
 			//infowindow.open(mimap,marker);		
