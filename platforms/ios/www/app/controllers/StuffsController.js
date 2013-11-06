@@ -214,6 +214,8 @@ Ext.regController('StuffsController', {
 				}
 			}
 			
+      bounds=new google.maps.LatLngBounds();
+      
 			//Create array of markers from arroy of positions
 			for (var n=0;n<markerPositions.length;n++){
 				var marker= new google.maps.Marker({
@@ -223,9 +225,42 @@ Ext.regController('StuffsController', {
 				
 				//Add this marker to collection
 				markers.push(marker);
+        bounds.extend(markerPositions[n]);
 			}
 			
-			
+                  var onGeoSuccess=function(position){
+                  console.log('Latitude' + position.coords.latitude + '**' + 'Longitude' + position.coords.longitude);
+                  userLocationX =position.coords.latitude;
+                  userLocationY =position.coords.longitude;
+                  console.log('userLocationX' + userLocationX);
+                  userLocation=new google.maps.LatLng(userLocationX,userLocationY);
+                  console.log('stuffscontroller.js-> onGeoSuccess -> The user now location is ' + userLocation);
+                  
+                  userMarker=new google.maps.Marker({
+                                                    position: userLocation,
+                                                    map:mimap,
+                                                    title:'You!'
+                                                    
+                                                    });
+                  //add click event for userLocation MARKER
+                  addInfoWindow(userMarker,'You!');
+                  
+                  bounds.extend(userLocation);  //for userLocation POSITION
+                  console.log('Try and set the bounds here...');
+                  mimap.fitBounds(bounds);
+                  
+                  
+                  }
+                  
+                  var onGeoError=function(error){
+                  console.log('An error has occurred');
+                  
+                  }
+                  
+                  //add userLocation
+                  navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
+
+
 			//Can we just add this once at the start of the app - rather than in several places?
 			google.maps.event.addDomListener(mimap,'center_changed',function(){
 					console.log('Firing resize');
@@ -235,7 +270,7 @@ Ext.regController('StuffsController', {
 			ToolbarDemo.views.stuffView.setActiveItem(ToolbarDemo.views.mapView,'flip');
 			
 			google.maps.event.trigger(mimap,"resize");		//ensures it displays correctly on opening	
-			mimap.setCenter(centralDublin);
+			//mimap.setCenter(centralDublin);             //No need to do this now with the bounds added
 			
 			
 			
