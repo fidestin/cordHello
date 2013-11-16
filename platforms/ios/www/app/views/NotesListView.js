@@ -6,8 +6,9 @@
 	items:[
 		{
 			xtype		: 'list',
+         cls     : 'vouchList',
 			store 		: ToolbarDemo.stores.vouchersStore,
-			itemTpl		: '<div>{datecreated}-{storename}</div>',
+			itemTpl		: '<div>{datecreated}-{supplierName}</div>',
 			listeners	: {
 				itemtap:function(record, index){	
             		vrecord=ToolbarDemo.stores.vouchersStore.getAt(index);

@@ -206,7 +206,7 @@ ToolbarDemo.views.NoteEditorView = Ext.extend(Ext.form.FormPanel, {
     },
 	{
 		xtype :'spacer',
-		height: '40'
+		height: '4'
 	},
 	{
 		xtype:'component',
@@ -215,17 +215,23 @@ ToolbarDemo.views.NoteEditorView = Ext.extend(Ext.form.FormPanel, {
 		html:'',
 		label:'QR'
 	},
-	{
-        xtype: 'textfield',
-        name: 'qrcodestring',
-		id:	'qrcodestring',
-        label: 'Code'
-    },
+  //REMd out to create extra space
+	//{
+  //      xtype: 'textfield',
+  //      name: 'qrcodestring',
+	//	id:	'qrcodestring',
+  //      label: 'Code'
+  //  },
 	 {
         xtype: 'textfield',
         name: 'storename',
         label: 'Store'
     },{
+            xtype: 'textfield',
+            name: 'supplierName',
+            label: 'Supplier'
+            },
+    {
         xtype: 'textfield',
         name: 'customername',
         label: 'Customer'

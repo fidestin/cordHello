@@ -27,7 +27,7 @@ function launchDirectionsWindow(){
   var dest=Ext.getCmp('mapcard').supplierLocation;
   var destX=dest[Object.keys(dest)[0]].toFixed(3);
   var destY=dest[Object.keys(dest)[1]].toFixed(3);
-  var directionsUrl='https://maps.google.com/maps?saddr='+userX+','+userY + '&daddr='+destX+','+destY;
+  var directionsUrl='https://maps.google.com/maps?saddr='+userX+','+userY + '&daddr='+destX+','+destY +'&dirflg=w';
   
   
   console.log('In MapChildbrowser :' + directionsUrl);
@@ -35,8 +35,9 @@ function launchDirectionsWindow(){
   
   //Cordova 3.0 Plugin
   var ref=window.open(directionsUrl,'_blank','location=yes');
-  ref.addEventListener('loadstart',function(event){alert('start' + event.url);});
-  ref.addEventListener('loadstop',function(event){Aalert('stop' + event.url);});
+  //Needless prompts
+ // ref.addEventListener('loadstart',function(event){alert('start' + event.url);});
+ // ref.addEventListener('loadstop',function(event){Aalert('stop' + event.url);});
   
   
  }

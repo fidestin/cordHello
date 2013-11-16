@@ -65,6 +65,8 @@ function updatePlanner(timeHere,distHere,dataIndex){
 			//before freshing the list with zeros...
 			//Could also update spinner to user can see something is happening, the distances are being calculated...
 			ToolbarDemo.views.stuffsListView.items.items[0].refresh();
+      var pointsc=Ext.getCmp('listStuffs');
+      pointsc.setLoading(false);
 		}
 	}
 	catch(b){

@@ -9,19 +9,21 @@ var userMarker;
 var userLocationX;
 var userLocationY;
 var bounds;
-
+var randWind;
+var randMarker;
 
 function addInfoWindow(marker,message){
  try{
- console.log('clicked...');
+ console.log('stuffsController-> Adding infoWindow...');
  var info=message;
  
  var infoWindow=new google.maps.InfoWindow({
                                            content:message
  });
  
- google.maps.event.addListener(marker,'click',function(){
-                               infoWindow.open(map,marker);
+ google.maps.event.addListener(marker,'mousedown',function(){
+ console.log('MouseDown Worked...click event in marker fired');
+                               infoWindow.open(mimap,marker);
                                });
  }
  catch(b){
@@ -56,27 +58,46 @@ Ext.regController('StuffsController', {
 	},
 	
     'editstuffs': function (options) {						//loads the stuffslist - should filter this
+
+                  var categoryTitle=options.category.data.catdescription;
+                  var pointsc=Ext.getCmp('listStuffs');
+                  var l=pointsc.setLoading(true,true);
+                  l.el.down('div.x-loading-msg').setHTML("Loading ->" +vrecord.data.catdescription);
+                  
+
+                
 		console.log('StuffsController.js_editstuffs');
 		//ToolbarDemo.views.stuffsListView.load(options.category); no method load on this view (Panel)//Could apply a filter??
 		if (ToolbarDemo.views.stuffView){
 			mapValuesReturned=0;
 			mapListDisplayed=false;
 			
-			var categoryTitle=options.category.data.catdescription;
-			var tb=Ext.getCmp('listStuffs');		//grab the view
+						var tb=Ext.getCmp('listStuffs');		//grab the view
 			tb.dockedItems.items[0].setTitle(categoryTitle);
 			
+               //   var pointsc=Ext.getCmp('listStuffs');
+               //   var l=pointsc.setLoading(true,true);
+               //   l.el.down('div.x-loading-msg').setHTML("Loading maps...");
+
+
 			//based on categoryID passed in via options.
 			thirdload(options.category.data.categoryID,function(){
 					topFunc();		//Store now loaded, callback -> gets the map distances and saves it to the store
+         
 					}
 			);		//pass thru the category ID. // this populates the data store - but without the distance calculated...
 			console.log('StuffsController_editStuffs_data store loaded with ' + ToolbarDemo.stores.stuffsStore.data.items.length);
 			//topFunc(); 		//this enables a counter, when complete we refresh the list...
 			//need to call this as a result of a callback to thirdload
-			ToolbarDemo.views.stuffView.setActiveItem(
+      
+      
+			//This fires the activate event (only now), so this should set the loading mask to false...
+      ToolbarDemo.views.stuffView.setActiveItem(
 					ToolbarDemo.views.stuffsListView,{ type: 'slide', direction: 'left' }
 			);
+                //var pointsc=Ext.getCmp('listStuffs');
+                //pointsc.setLoading(false);
+      //console.log('Loaded message gone');
 			
 		}
 	},
@@ -225,6 +246,7 @@ Ext.regController('StuffsController', {
 				
 				//Add this marker to collection
 				markers.push(marker);
+        addInfoWindow(marker,suppliers[n].dataS.description);
         bounds.extend(markerPositions[n]);
 			}
 			
@@ -243,6 +265,7 @@ Ext.regController('StuffsController', {
                                                     
                                                     });
                   //add click event for userLocation MARKER
+                  console.log('stuffsController -> calling addInfoWindow');
                   addInfoWindow(userMarker,'You!');
                   
                   bounds.extend(userLocation);  //for userLocation POSITION
@@ -363,6 +386,9 @@ Ext.regController('StuffsController', {
 				
 				//Add this marker to collection
 				markers.push(marker);
+        
+        //Add an infoWindow
+        addInfoWindow(marker,currentsupplier.data.description);
         //Extend bounds
        bounds.extend(markerPositions[n]);
 			}
@@ -411,7 +437,32 @@ Ext.regController('StuffsController', {
 				console.log('Firing resize');
 				google.maps.event.trigger(mimap,"resize");	//ensures it displays correctly after pan
 			});
-			
+                  try{
+                  console.log('Adding the map clicker...');
+                  var randLocation=new google.maps.LatLng(53.1634,-9.3755);
+                  randMarker=new google.maps.Marker({
+                                                       position:randLocation,
+                                                       map:mimap,
+                                                       title:'randMarker'
+                  });
+                  
+                  
+			//Add marker for supplier....
+                  randWind=new google.maps.InfoWindow({
+                                                          content:'This is the content'
+                  });
+                  
+                  google.maps.event.addListener(randMarker,'mousedown',function(){
+                  console.log('clicked.tapped.....');
+                                                 randWind.open(mimap,randMarker);
+                                                });
+                  bounds.extend(randLocation);
+                  }
+                  
+                  catch(b){
+                   console.log('Error in creating randMarker'+b);
+                  }
+                  
 			console.log('Openg map -> setActiveItem');
     		ToolbarDemo.views.stuffView.setActiveItem(ToolbarDemo.views.mapView,'flip');
 			

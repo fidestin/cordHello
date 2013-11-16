@@ -101,6 +101,8 @@ ToolbarDemo.models.voucher=Ext.regModel('ToolbarDemo.models.voucher',{
 		        {name:'description',type:'string'},
 		        {name:'customername',type:'string'},
 		        {name:'datecreated',type:'string'},
+            {name:'supplierName',type:'string'},
+            {name:'supplierID',type:'string'},
 				{name:'expires',	type:'string'}
 		        
 		        ]

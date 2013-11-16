@@ -1,4 +1,4 @@
-﻿ToolbarDemo.views.StuffsListView = Ext.extend(Ext.Panel, {
+ToolbarDemo.views.StuffsListView = Ext.extend(Ext.Panel, {
 	id			 : 'listStuffs',
 	stuffsStore: Ext.emptyFn,
 	stuffsList : Ext.emptyFn,
@@ -20,7 +20,9 @@
 		}
 	],
     listeners:{
-    	activate:function(){console.log('StuffsListView.js_-> activate->Just activated stuffs Panel');}
+    	activate:function(){console.log('StuffsListView.js_-> activate->Just activated stuffs Panel. Re-added stuffs');
+                                            
+      }
     },
     layout: 'fit',
     initComponent: function () {
@@ -45,6 +47,12 @@
             items: [ 
 				this.backButton,
 					{ xtype: 'spacer' },
+                    //{
+                    //iconCls:'spinneriOS',
+                    //ui:"plain"
+                   // xtype:'image',
+                   // src:'travelicons/Bars.jpg'
+                    //},
 				this.mapListButton
 					]
         });

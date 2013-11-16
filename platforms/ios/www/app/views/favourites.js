@@ -1,6 +1,8 @@
 //This is a TAB!!! panel. It comtains two items (cards)
-//It can only display one at a time, so use animation to dwitch,,,
-var favourites;			
+//It can only display one at a time, so use animation to switch,,,
+var favourites;
+var favMap;
+
 favourites = Ext.extend(Ext.TabPanel, {
 	title:'Fav',
 	iconCls:'about',
@@ -8,7 +10,7 @@ favourites = Ext.extend(Ext.TabPanel, {
 	fullscreen:true,
 	cardSwitchAnimation:{type:'slide'},
 	layout:{			//could be auto, fit, vbox, hbox
-		type:'card'			//must set this to card,so that the items are loaded but only one can be displayed....TabPanel requires CARD
+		//type:'card'			//must set this to card,so that the items are loaded but only one can be displayed....TabPanel requires CARD
 	},
 	//defaults:{flex:1},		//apply this property value to all below..
 	
@@ -34,6 +36,7 @@ favourites = Ext.extend(Ext.TabPanel, {
 			
 			 this.dockedItems = [this.topToolbar];
 		
+    
 			
 			var theTextStuff=new Ext.Panel({
 				html:'This is the text stuff, the first panel',
@@ -42,7 +45,15 @@ favourites = Ext.extend(Ext.TabPanel, {
 		
 			
     		this.items=[
-					theTextStuff
+                    {
+                    xtype: 'map',
+                    //center:HQposition,
+                    //useCurrentLocation: true,
+                    mapOptions: {
+                    zoom: 15,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                     }
+                    }
 				];
     		
 	        favourites.superclass.initComponent.apply(this, arguments);       

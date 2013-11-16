@@ -204,7 +204,7 @@ Fidestin.Utils.getOpenVouchers=function(storeID){
            data:params,
            dataType:"json",    
            contentType: "application/json; charset=utf-8",
-           url:"http://www.handygrub.com/test/Service1.asmx/ListCustomerVouchers",
+           url:"http://www.handygrub.com/loyaltybackup/Service1.asmx/ListCustomerVouchers",
            success:function(result) {
            //Update the badge with the totals...
            //alert('Store Name :' +result) ;

@@ -174,7 +174,7 @@ ToolbarDemo.views.LoadCustomerVouchers=function(customercode){
          else{
          var i=0;
          for (i=0;i<result.length;i++){
-         ToolbarDemo.stores.vouchersStore.add({storeID:result[i].storeID,storename:result[i].storename,voucherID:result[i].id,description:result[i].description,expires:result[i].expires,customername:result[i].customername,datecreated:result[i].datecreated});
+         ToolbarDemo.stores.vouchersStore.add({storeID:result[i].storeID,storename:result[i].storename,voucherID:result[i].id,description:result[i].description,expires:result[i].expires,customername:result[i].customername,datecreated:result[i].datecreated,supplierName:result[i].supplierName,supplierID:result[i].supplierID});
          localStorage.voucherscount=result.length;
          
          }
