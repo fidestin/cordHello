@@ -11,7 +11,7 @@ ToolbarDemo.views.Categorycard = Ext.extend(Ext.form.FormPanel, {
 			{
 				 xtype		: 'list',
 				 store 		: ToolbarDemo.stores.categoryStore,
-				 itemTpl:'<div class="list-item-title"><table border="0"><tr><td width="15%"><img src="{catImage}" width="60" height="60"/></td>' + '<td width="85%"><table border="0"><tr><td width="90%" class="PLH">{catdescription}</td><td style="width:90%;font-size:20pt;color:#0080FF"><strong></strong></td></tr>' +
+				 itemTpl:'<div class="list-item-title"><table border="0"><tr><td width="15%"><img src="{catImage}" width="60" height="60"/></td>' + '<td width="85%"><table border="0"><tr><td style="width:90%;font-size:10pt;">{catdescription}</td><td style="width:90%;font-size:20pt;color:#0080FF"><strong></strong></td></tr>' +
 				 '<tr><td colspan="2" style="vertical-align:bottom;height:10px"></td></tr></table></TD></TR></table></div>',
 				 listeners	: {
 					itemtap:function(record, index){

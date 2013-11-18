@@ -11,6 +11,70 @@ var userLocationY;
 var bounds;
 var randWind;
 var randMarker;
+var mimarkers=[];
+google.maps.InfoWindow.prototype.opened=false;
+
+
+function setMarkers(map, markers) {
+ console.log('Adding special map markers');
+ for (var i = 0; i < markers.length; i++) {
+  
+  var sites = markers[i];
+  var imageLoc="";
+  var category=sites[3];
+  switch(category){
+   case 1:
+    imageLoc='images/carrental.png';
+    break;
+   case 2:
+    imageLoc='images/bar.png';
+    break;
+   case 3:
+    imageLoc='images/hotel_1.png';
+    break;
+   case 4:
+    imageLoc='images/restaurant_3.png';
+    break;
+   default:
+    imageLoc='images/restaurant_3.png';
+  }
+  
+  var siteLatLng = new google.maps.LatLng(sites[1], sites[2]);
+  
+  var marker = new google.maps.Marker({
+                                      position: siteLatLng,
+                                      map: map,
+                                      icon: (imageLoc),
+                                      title: sites[0],
+                                      zIndex: sites[3],
+                                      html: sites[0],
+                                      category:sites[3]
+                                      });
+  
+  var contentString = "Some content";
+  
+  google.maps.event.addListener(marker, "mousedown", function () {
+                                //alert(this.html);
+                                console.log('Category ' + this.category);
+                                console.log('HTML' + this.html);
+                                infowindow.setContent(this.html);
+                                
+                                if (infowindow.opened)
+                                {
+                                console.log('Window opened, now closing it.');
+                                infowindow.close();
+                                infowindow.opened=false;
+                                }
+                                else
+                                {
+                                console.log('Window closed, now opening it.');
+                                infowindow.open(mimap,this);
+                                infowindow.opened=true;
+                                }
+                                });
+ }
+}
+
 
 function addInfoWindow(marker,message){
  try{
@@ -239,14 +303,14 @@ Ext.regController('StuffsController', {
       
 			//Create array of markers from arroy of positions
 			for (var n=0;n<markerPositions.length;n++){
-				var marker= new google.maps.Marker({
-					position:markerPositions[n],
-					map:mimap
-				});
+			//	var marker= new google.maps.Marker({
+			//		position:markerPositions[n],
+			//		map:mimap
+			//	});
 				
 				//Add this marker to collection
-				markers.push(marker);
-        addInfoWindow(marker,suppliers[n].dataS.description);
+				//markers.push(marker);
+        //addInfoWindow(marker,suppliers[n].dataS.description);
         bounds.extend(markerPositions[n]);
 			}
 			
@@ -258,15 +322,15 @@ Ext.regController('StuffsController', {
                   userLocation=new google.maps.LatLng(userLocationX,userLocationY);
                   console.log('stuffscontroller.js-> onGeoSuccess -> The user now location is ' + userLocation);
                   
-                  userMarker=new google.maps.Marker({
-                                                    position: userLocation,
-                                                    map:mimap,
-                                                    title:'You!'
-                                                    
-                                                    });
+                  //userMarker=new google.maps.Marker({
+                  //                                  position: userLocation,
+                  //                                  map:mimap,
+                  //                                  title:'You!'
+                  //
+                  //                                  });
                   //add click event for userLocation MARKER
-                  console.log('stuffsController -> calling addInfoWindow');
-                  addInfoWindow(userMarker,'You!');
+                  //console.log('stuffsController -> calling addInfoWindow');
+                  //addInfoWindow(userMarker,'You!');
                   
                   bounds.extend(userLocation);  //for userLocation POSITION
                   console.log('Try and set the bounds here...');
@@ -361,6 +425,7 @@ Ext.regController('StuffsController', {
 			var suppliers=new Ext.util.MixedCollection();
 			suppliers.add(ToolbarDemo.stores.stuffsStore.getAt(currentSupplierIndex));
 			
+      mimarkers.length=0;
 			markers.length=0;				//init the marker array
 			markerPositions.length=0;		//ensure the position array is empty to begin with..
 			
@@ -377,18 +442,24 @@ Ext.regController('StuffsController', {
 				}
 			}
 			
+      
+                  for (var i=0;i<suppliers.length;i++){
+                    var arSupplier=[suppliers.items[i].data.description,suppliers.items[i].data.latX,suppliers.items[i].data.latY,3];
+                    mimarkers.push(arSupplier);
+                  }
+                  
 			//Create array of markers from array of positions
 			for (var n=0;n<markerPositions.length;n++){
-				var marker= new google.maps.Marker({
-					position:markerPositions[n],
-					map:mimap
-				});
+			//	var marker= new google.maps.Marker({
+			//		position:markerPositions[n],
+			//		map:mimap
+			//	});
 				
 				//Add this marker to collection
-				markers.push(marker);
+			//	markers.push(marker);
         
         //Add an infoWindow
-        addInfoWindow(marker,currentsupplier.data.description);
+      //  addInfoWindow(marker,currentsupplier.data.description);
         //Extend bounds
        bounds.extend(markerPositions[n]);
 			}
@@ -403,14 +474,21 @@ Ext.regController('StuffsController', {
                   userLocation=new google.maps.LatLng(userLocationX,userLocationY);
                   console.log('stuffscontroller.js-> onGeoSuccess -> The user now location is ' + userLocation);
                   
-                  userMarker=new google.maps.Marker({
-                                                    position: userLocation,
-                                                    map:mimap,
-                                                    title:'You!'
-                                                    
-                                                    });
+                  var miUser=['Mee',position.coords.latitude,position.coords.longitude,0];
+                  mimarkers.push(miUser);
+                  setMarkers(mimap,mimarkers);
+                  infowindow=new google.maps.InfoWindow({
+                                                        content:"loading..."
+                  })
+                  
+                  //userMarker=new google.maps.Marker({
+                  //                                  position: userLocation,
+                  //                                  map:mimap,
+                  //                                  title:'You!'
+                  //
+                  //                                  });
                   //add click event for userLocation MARKER
-                  addInfoWindow(userMarker,'You!');
+                  //addInfoWindow(userMarker,'You!');
                   
                   bounds.extend(userLocation);  //for userLocation POSITION
                   console.log('Try and set the bounds here...');
@@ -437,50 +515,20 @@ Ext.regController('StuffsController', {
 				console.log('Firing resize');
 				google.maps.event.trigger(mimap,"resize");	//ensures it displays correctly after pan
 			});
-                  try{
-                  console.log('Adding the map clicker...');
-                  var randLocation=new google.maps.LatLng(53.1634,-9.3755);
-                  randMarker=new google.maps.Marker({
-                                                       position:randLocation,
-                                                       map:mimap,
-                                                       title:'randMarker'
-                  });
-                  
-                  
-			//Add marker for supplier....
-                  randWind=new google.maps.InfoWindow({
-                                                          content:'This is the content'
-                  });
-                  
-                  google.maps.event.addListener(randMarker,'mousedown',function(){
-                  console.log('clicked.tapped.....');
-                                                 randWind.open(mimap,randMarker);
-                                                });
-                  bounds.extend(randLocation);
-                  }
-                  
-                  catch(b){
-                   console.log('Error in creating randMarker'+b);
-                  }
                   
 			console.log('Openg map -> setActiveItem');
     		ToolbarDemo.views.stuffView.setActiveItem(ToolbarDemo.views.mapView,'flip');
 			
 			google.maps.event.trigger(mimap,"resize");		//ensures it displays correctly on opening	
-			//mimap.setCenter(supplierLocation);
-      //mimap.fitBounds(bounds);
-      //mimap.setCenter(bounds.getCenter());         //take the marker bounds into account
 			
-			//get the toolbar component - Allows us update the ToolBar easily...
-			var tb=Ext.getCmp('mapcard');
+      var tb=Ext.getCmp('mapcard');
 			tb.supplierLocation=supplierLocation;
 			google.maps.event.addListener(mimap, 'zoom_changed', function(){
 					console.log('mimap Zoom ended');
-				//	tb.dockedItems.items[0].setTitle('Loading...');
-			});
+							});
 			google.maps.event.addListener(mimap, 'idle', function(){
 					console.log('All idle now');
-				//	tb.dockedItems.items[0].setTitle('Loaded!');
+		
 			});
      			
                   }
@@ -488,11 +536,7 @@ Ext.regController('StuffsController', {
                    console.log('Error in stuffsController.js-> ' + b);
                   
                   }
-			//Just go and open the marker straight away...when map is displayed...
-			//supplierInfowindow.open(mimap,supplierMarker);
-			//infowindow.open(mimap,marker);		
-			
-			//Will need to close these, and reset the map when closing the map
+					//Will need to close these, and reset the map when closing the map
  		}
 	},
 
