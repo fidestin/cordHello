@@ -143,7 +143,7 @@ ToolbarDemo.views.NoteEditorView = Ext.extend(Ext.form.FormPanel, {
                 this.backButton,
                 { xtype: 'spacer' },
                //this.useitButton   Generates the QR code
-                    VoucherDetailsButton
+                  //  VoucherDetailsButton  loads a web page based on voucher URL - no need
             ]
         });
 
@@ -247,6 +247,13 @@ ToolbarDemo.views.NoteEditorView = Ext.extend(Ext.form.FormPanel, {
         id:'expires',
         label: 'Expires '
     },
+            {
+            xtype: 'textfield',
+            name: 'voucherID',
+            id:'voucherID',
+            label: 'ID '
+            },
+
     {
     	xtype:'textareafield',
     	name:'description',
@@ -255,8 +262,8 @@ ToolbarDemo.views.NoteEditorView = Ext.extend(Ext.form.FormPanel, {
     	
     },{
         xtype: 'hiddenfield',
-        name: 'voucherID',
-        id :  'voucherID',
+        name: 'voucherIDold',
+        id :  'voucherIDold',
         label: 'Id',
         //required: true  this puts a star beside it...
     },

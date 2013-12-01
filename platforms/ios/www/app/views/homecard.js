@@ -159,7 +159,7 @@ ToolbarDemo.views.LoadCustomerVouchers=function(customercode){
   if (localStorage.hasConnection=='0') return -99;
   var params="{customercode:'" + customercode + "',redeemedstatus:'0',storeID:'0',randDate:'"+randDate+"',something:'crap'}";
   //alert(params);
-  console.log('LoadingCustomerVouchers'+params);
+  console.log('HOMECARD.JS_ToolbarDemo.views.LoadCustomerVouchers_LoadingCustomerVouchers'+params);
   
   $.ajax({
          type:"POST",

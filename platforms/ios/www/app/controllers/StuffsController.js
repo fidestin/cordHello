@@ -22,14 +22,17 @@ function setMarkers(map, markers) {
   var sites = markers[i];
   var imageLoc="";
   var category=sites[3];
-  switch(category){
+  switch(parseInt(category)){
+   case 0:
+    imageLoc='images/marker.png';
+    break;
    case 1:
     imageLoc='images/carrental.png';
     break;
-   case 2:
+   case 225:
     imageLoc='images/bar.png';
     break;
-   case 3:
+   case 214:
     imageLoc='images/hotel_1.png';
     break;
    case 4:
@@ -46,7 +49,7 @@ function setMarkers(map, markers) {
                                       map: map,
                                       icon: (imageLoc),
                                       title: sites[0],
-                                      zIndex: sites[3],
+                                    //  zIndex: sites[3],
                                       html: sites[0],
                                       category:sites[3]
                                       });
@@ -219,7 +222,7 @@ Ext.regController('StuffsController', {
 			ClearMap();				//Clear map when returning to the list view...
     	if (ToolbarDemo.views.stuffView){
     		ToolbarDemo.views.stuffView.setActiveItem(
-    	            ToolbarDemo.views.stuffsListView,'flip');
+    	            ToolbarDemo.views.stuffsListView,{ type: 'slide', direction: 'right' });
     	}
 	},
 	
@@ -266,9 +269,9 @@ Ext.regController('StuffsController', {
 				}
 			else if (options.action=="openMapList"){
 				var mapBackButton=Ext.getCmp('mapBackButton');
-				mapBackButton.setVisible(false);
+				mapBackButton.setVisible(true);
 				var mapListButton=Ext.getCmp('mapListButton');
-				mapListButton.setVisible(true);
+				mapListButton.setVisible(false);
         var directionsButton=Ext.getCmp('directionsButton');
         directionsButton.setVisible(false);
 				mapListButton.setText('List');
@@ -276,6 +279,7 @@ Ext.regController('StuffsController', {
 				vmap.dockedItems.items[0].setTitle(vlist.dockedItems.items[0].title);		//set the CategoryTitle..
 			}
 			
+      vmap.listMap=true;
 			
 			mimap=Ext.getCmp('map1').items.items[0].map;	//grab the map object...
 			
@@ -354,7 +358,7 @@ Ext.regController('StuffsController', {
 					google.maps.event.trigger(mimap,"resize");	//ensures it displays correctly after pan
 			});
 				
-			ToolbarDemo.views.stuffView.setActiveItem(ToolbarDemo.views.mapView,'flip');
+			ToolbarDemo.views.stuffView.setActiveItem(ToolbarDemo.views.mapView,{ type: 'slide', direction: 'left' });
 			
 			google.maps.event.trigger(mimap,"resize");		//ensures it displays correctly on opening	
 			//mimap.setCenter(centralDublin);             //No need to do this now with the bounds added
@@ -384,9 +388,9 @@ Ext.regController('StuffsController', {
 			
 			if (options.action=="openMap"){
 				var mapBackButton=Ext.getCmp('mapBackButton');
-				mapBackButton.setVisible(false);
+				mapBackButton.setVisible(true);
 				var mapListButton=Ext.getCmp('mapListButton');
-				mapListButton.setVisible(true);
+				mapListButton.setVisible(false);
 				mapListButton.setText('Detail');
 				mapListButton.handler=mapDetailClose;
         var directionsButton=Ext.getCmp('directionsButton');
@@ -405,6 +409,7 @@ Ext.regController('StuffsController', {
 				vmap.dockedItems.items[0].setTitle(vlist.dockedItems.items[0].title);		//set the CategoryTitle..
 			}
 			
+      vmap.listMap=false;
 			//Set the Close button
 			
 			
@@ -432,36 +437,19 @@ Ext.regController('StuffsController', {
       bounds=new google.maps.LatLngBounds();
       
       
-			//Create an array of positions //TODO should match the openMapList
-			for (var i=0;i<suppliers.length;i++){
-				if (options.action=="openMap"){
-					markerPositions[i]=new google.maps.LatLng(suppliers.items[i].data.latX,suppliers.items[i].data.latY);
-				}
-				if (options.action=="openMapList"){
-					markerPositions[i]=new google.maps.LatLng(suppliers[i].data.latX,suppliers[i].data.latY);
-				}
-			}
 			
-      
+                  var arSupplier=[];
+                  //arSupplier.length=0;
                   for (var i=0;i<suppliers.length;i++){
-                    var arSupplier=[suppliers.items[i].data.description,suppliers.items[i].data.latX,suppliers.items[i].data.latY,3];
+                    var thisSupplier=suppliers.items[i].data;
+                    arSupplier=[thisSupplier.description,thisSupplier.latX,thisSupplier.latY,thisSupplier.categoryID];
+                    markerPositions[i]=new google.maps.LatLng(thisSupplier.latX,thisSupplier.latY);
                     mimarkers.push(arSupplier);
                   }
                   
 			//Create array of markers from array of positions
 			for (var n=0;n<markerPositions.length;n++){
-			//	var marker= new google.maps.Marker({
-			//		position:markerPositions[n],
-			//		map:mimap
-			//	});
-				
-				//Add this marker to collection
-			//	markers.push(marker);
-        
-        //Add an infoWindow
-      //  addInfoWindow(marker,currentsupplier.data.description);
-        //Extend bounds
-       bounds.extend(markerPositions[n]);
+			       bounds.extend(markerPositions[n]);
 			}
 		
     
@@ -474,21 +462,13 @@ Ext.regController('StuffsController', {
                   userLocation=new google.maps.LatLng(userLocationX,userLocationY);
                   console.log('stuffscontroller.js-> onGeoSuccess -> The user now location is ' + userLocation);
                   
-                  var miUser=['Mee',position.coords.latitude,position.coords.longitude,0];
+                  var miUser=['Your current location',position.coords.latitude,position.coords.longitude,0];
                   mimarkers.push(miUser);
                   setMarkers(mimap,mimarkers);
                   infowindow=new google.maps.InfoWindow({
                                                         content:"loading..."
                   })
                   
-                  //userMarker=new google.maps.Marker({
-                  //                                  position: userLocation,
-                  //                                  map:mimap,
-                  //                                  title:'You!'
-                  //
-                  //                                  });
-                  //add click event for userLocation MARKER
-                  //addInfoWindow(userMarker,'You!');
                   
                   bounds.extend(userLocation);  //for userLocation POSITION
                   console.log('Try and set the bounds here...');
@@ -517,7 +497,7 @@ Ext.regController('StuffsController', {
 			});
                   
 			console.log('Openg map -> setActiveItem');
-    		ToolbarDemo.views.stuffView.setActiveItem(ToolbarDemo.views.mapView,'flip');
+    		ToolbarDemo.views.stuffView.setActiveItem(ToolbarDemo.views.mapView, { type: 'slide', direction: 'left' });
 			
 			google.maps.event.trigger(mimap,"resize");		//ensures it displays correctly on opening	
 			
@@ -544,7 +524,7 @@ Ext.regController('StuffsController', {
 		console.log('StuffsController.js_cancelMap');
 		ClearMap();				//Clear map when returning to the list view...
     	if (ToolbarDemo.views.stuffView){
-    		ToolbarDemo.views.stuffView.setActiveItem(ToolbarDemo.views.siteView,'flip');
+    		ToolbarDemo.views.stuffView.setActiveItem(ToolbarDemo.views.siteView,{ type: 'slide', direction: 'right' });
     	}
 	},
     

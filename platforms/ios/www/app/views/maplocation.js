@@ -77,6 +77,7 @@ ToolbarDemo.views.Mapcard = Ext.extend(Ext.Panel, {
 	supplierLocation:Ext.emptyFn,
 	supplierList:Ext.emptyFn,
     id: 'mapcard',
+                                       listMap:Ext.emptyFn,
 	fullscreen:true,
 	layout:'fit',
     initComponent: function() {
@@ -102,11 +103,14 @@ ToolbarDemo.views.Mapcard = Ext.extend(Ext.Panel, {
 				id:'mapBackButton',
 				scope:this,
 				handler:function(){
-						Ext.dispatch({
-							controller: ToolbarDemo.controllers.stuffsController,
-							action: 'cancelMap'
-						});
-					}
+                                  if (Ext.getCmp('mapcard').listMap==true) {
+                                   this.cancelListHandler();
+                                  }
+                                  else{
+                                   this.cancelMapHandler();
+                                  }
+        
+											}
 		});
 			
 		var listButton=new Ext.Button({
@@ -115,11 +119,13 @@ ToolbarDemo.views.Mapcard = Ext.extend(Ext.Panel, {
 				id:'mapListButton',
 				scope:this,
 				handler:function(){
+                                  
 						Ext.dispatch({
 							controller: ToolbarDemo.controllers.stuffsController,
 							action: 'cancelstuffList'
 						});
-					}
+        }
+					
 		});
 		
 		this.topToolbar = new Ext.Toolbar({
@@ -127,9 +133,10 @@ ToolbarDemo.views.Mapcard = Ext.extend(Ext.Panel, {
 				id:'st1',
 	            items: [
 					backButton,
-          directionsButton,
+          
 	                { xtype: 'spacer'},
-					listButton
+					listButton,
+          directionsButton,
 	             ]
 	    });
 		
@@ -175,6 +182,23 @@ ToolbarDemo.views.Mapcard = Ext.extend(Ext.Panel, {
 			}
 		});
 		
+                                       this.cancelListHandler= function(){
+                                       console.log('cancelling list handler');
+                                       Ext.dispatch({
+                                                    controller: ToolbarDemo.controllers.stuffsController,
+                                                    action: 'cancelstuff'
+                                                    });
+
+                                       };
+                                       
+                                       this.cancelMapHandler= function(){
+                                       console.log('cancelling map handler');
+                                       Ext.dispatch({
+                                                    controller: ToolbarDemo.controllers.stuffsController,
+                                                    action: 'cancelMap'
+                                                    });
+
+                                       };
 		
 		this.items=[
 			Mymap

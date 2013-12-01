@@ -36,7 +36,7 @@ ToolbarDemo.views.Sitecard = Ext.extend(Ext.Panel, {
 				scope:this
 			});
 			
-			var showPicsButton=new Ext.Button({
+			var showMapButton=new Ext.Button({
 				text:"Map",
 				handler:function(){
 					//alert('This opens the carousel panel');
@@ -50,7 +50,7 @@ ToolbarDemo.views.Sitecard = Ext.extend(Ext.Panel, {
 				}
 			});
 			
-			var showMapButton=new Ext.Button({
+			var showPicsButton=new Ext.Button({
 				text:"Map",
 				handler:function(){
 					alert('This opens the map');
@@ -72,7 +72,7 @@ ToolbarDemo.views.Sitecard = Ext.extend(Ext.Panel, {
 	            items: [
 					backButton,
 	                { xtype: 'spacer'},
-					showPicsButton
+					showMapButton
 	             ]
 	        });
 	        
